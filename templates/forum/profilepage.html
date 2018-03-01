@@ -1,0 +1,155 @@
+
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>{{title}}</title>
+	</head>
+	<style type="text/css">
+
+
+
+
+    body {
+  padding-top: 70px;
+  padding-bottom: 30px;
+}
+ p {
+     text-align:center;
+     font-size:300%;
+ }
+.theme-dropdown .dropdown-menu {
+  position: static;
+  display: block;
+  margin-bottom: 20px;
+}
+.theme-showcase > p > .btn {
+  margin: 5px 0;
+}
+.theme-showcase .navbar .container {
+  width: auto;
+  height:200px;
+}
+
+.btn {
+    position:static;
+    width:150px;
+    height:60px;
+    background-color:rgb(16,16,16);
+    color:white;
+    border-color:rgb(16,16,16);
+}
+ .pos {
+     position:absolute;
+     padding-left:1200px;
+ }
+
+ .ques {
+     position:relative;
+     padding-left:625px;
+     height:60px;
+     width:80px;
+
+ }
+
+ .que {
+     background-color:#101010;
+     color:white;
+    border-color:rgb(16,16,16);
+     height:60px;
+     width:120px;
+     border-radius:5px;
+ }
+
+
+	</style>
+
+<link href="{% static 'forum/css//bootstrap.min.css'%} " rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="{% static 'forum/css/bootstrap-theme.min.css'%} " rel="stylesheet">
+
+	<body>
+	    {% include "forum/navbar.html"%}
+	    <form action = "." method="post" >
+			{% csrf_token %}
+	    <div class="pos">
+			<input type="submit" class="btn" value="logout" name = "logout"/><br>
+			</div>
+	<div>
+		<p><b>Hello {{user}}</b></p>
+		<p>Click <a href="/">here</a> to check questions</p>
+
+            <div class="ques">
+			<input type="submit" value="Ask Question" class="que"  name = "question"/>
+			</div>
+		</form>
+	</div>
+
+		<br>
+
+	<div>
+			{% if questionsyouasked %}
+			<h4>Questions you've asked are:</h4>
+			<table class = "table table-bordered">
+
+
+				<tr>
+				<th>Title</th>
+				<th>Content</th>
+				<th>Answered</th>
+				<th>Submitted by</th>
+
+				</tr>
+
+				{% for i in questionlist %}
+					<tr>
+					<td>{{i}}</td>
+					<td><a href="/answerquestion?qid={{i.qid}}">{{i.questioncontent}}</a></td>
+					<td> {% if i.answered%} yes {%else%} no {%endif%} </td>
+					<td>{{i.askedby}}</td>
+					</tr>
+
+				{% endfor %}
+
+			</table>
+			{% endif %}
+		</div>
+
+		<br>
+
+		{% if showquestionsaskedtoyou %}
+
+		<div>
+			<h4>Questions asked to you are</h4>
+			<table class = "table table-bordered">
+
+
+				<tr>
+				<th>Title</th>
+				<th>Content</th>
+				<th>Answered</th>
+				<th>Submitted by</th>
+
+				</tr>
+
+				{% for i in questionaskedtoyoulist %}
+					<tr>
+					<td>{{i}}</td>
+					<td><a href="/answerquestion?qid={{i.qid}}">{{i.questioncontent}}</a></td>
+					<td> {% if i.answered%} yes {%else%} no {%endif%} </td>
+					<td>{{i.askedby}}</td>
+					</tr>
+
+				{% endfor %}
+
+			</table>
+
+		</div>
+
+		{% endif %}
+
+
+	</body>
+
+</html>
